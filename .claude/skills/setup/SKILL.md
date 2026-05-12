@@ -1,4 +1,5 @@
 ---
+name: setup
 description: Interactive API key configuration guide — checks current .env state and walks you through Semantic Scholar, DeepXiv, and Review LLM setup
 ---
 

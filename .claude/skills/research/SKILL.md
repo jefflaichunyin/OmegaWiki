@@ -1,4 +1,5 @@
 ---
+name: research
 description: End-to-end research orchestrator — idea discovery → experiment design → execution → verdict → paper writing, with human gates and session-resumable state
 argument-hint: <research-direction-or-brief> [--auto] [--start-from stage1|stage2|stage3|stage3-collect|stage3-check|stage4|stage5] [--skip-paper] [--venue ICLR|NeurIPS|ICML|ACL|CVPR]
 ---
@@ -73,7 +74,7 @@ argument-hint: <research-direction-or-brief> [--auto] [--start-from stage1|stage
 2. **Auto-recovery detection** (when `--start-from` is not specified):
    - If `wiki/outputs/pipeline-progress.md` exists and `status == running`:
      - Read direction, current_stage, started, slug
-     - Use AskUserQuestion to prompt the user:
+      - Use the question tool to prompt the user:
        ```
        Unfinished pipeline detected:
        Direction: {direction}
@@ -213,7 +214,7 @@ Args: "{direction}" --domain {domain}
 
 **If interactive mode**:
 - List all generated ideas (slug, title, priority, novelty score)
-- Use AskUserQuestion to prompt user to select one idea (or enter "stop" to halt)
+- Use the question tool to prompt user to select one idea (or enter "stop" to halt)
 - If user selects stop: save progress, terminate pipeline
 
 **Save progress**:
@@ -373,7 +374,7 @@ Args: "{experiment_slug}" --auto
   Idea: {slug} | Status: {status} | Novelty: {novelty_score}
   Linked experiments: {count} ({succeeded}/{inconclusive}/{failed})
   ```
-- Use AskUserQuestion to prompt user: ready for paper / need more experiments / stop here
+- Use the question tool to prompt user: ready for paper / need more experiments / stop here
 - If "need more experiments": return to Stage 2 for replanning
 - If "stop here": save progress, generate final report (without paper)
 
@@ -546,4 +547,4 @@ Update pipeline-progress: status: completed
 - `Write` — write pipeline-progress, PIPELINE_REPORT
 - `Glob` — find experiments, ideas, methods
 - `Skill` — call sub-skills (core capability)
-- `AskUserQuestion` — user interaction at Gates and auto-recovery detection
+- `question` — user interaction at Gates and auto-recovery detection
