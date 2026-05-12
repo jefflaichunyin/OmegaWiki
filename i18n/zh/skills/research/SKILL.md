@@ -73,7 +73,7 @@ argument-hint: <research-direction-or-brief> [--auto] [--start-from stage1|stage
 2. **自动恢复检测**（无 `--start-from` 时）：
    - 若 `wiki/outputs/pipeline-progress.md` 存在 且 `status == running`：
      - 读取 direction、current_stage、started、slug
-     - 使用 AskUserQuestion 提示用户选择：
+      - 使用 question 工具提示用户选择：
        ```
        检测到未完成的 pipeline:
        方向: {direction}
@@ -213,7 +213,7 @@ Args: "{direction}" --domain {domain}
 
 **若交互模式**：
 - 列出所有生成的 ideas（slug、title、priority、novelty score）
-- 使用 AskUserQuestion 提示用户选择一个 idea（或输入 stop 停止）
+- 使用 question 工具提示用户选择一个 idea（或输入 stop 停止）
 - 若用户选择 stop：保存进度，终止流水线
 
 **保存进度**：
@@ -373,7 +373,7 @@ Args: "{experiment_slug}" --auto
   Idea: {slug} | Status: {status} | Novelty: {novelty_score}
   Linked experiments: {count} ({succeeded}/{inconclusive}/{failed})
   ```
-- 使用 AskUserQuestion 提示用户确认：ready for paper / need more experiments / stop here
+- 使用 question 工具提示用户确认：ready for paper / need more experiments / stop here
 - 若 "need more experiments"：返回 Stage 2 重新规划
 - 若 "stop here"：保存进度，生成最终报告（不含论文）
 
@@ -546,4 +546,4 @@ python3 tools/research_wiki.py log wiki/ \
 - `Write` — 写入 pipeline-progress、PIPELINE_REPORT
 - `Glob` — 查找 experiments、ideas、methods
 - `Skill` — 调用子 skills（核心能力）
-- `AskUserQuestion` — Gate 和自动恢复检测的用户交互
+- `question` — Gate 和自动恢复检测的用户交互

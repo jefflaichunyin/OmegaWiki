@@ -12,6 +12,46 @@ import { triggerIntent } from "./intent.js";
 
 marked.use({ gfm: true, breaks: false });
 
+// --- KaTeX math rendering ---------------------------------------------------
+
+function renderMath(el) {
+  if (typeof renderMathInElement !== "function") {
+    console.log("[KaTeX] renderMathInElement not ready, retrying...");
+    setTimeout(() => renderMath(el), 100);
+    return;
+  }
+  console.log("[KaTeX] Rendering math in element:", el.textContent.slice(0, 100));
+  try {
+    renderMathInElement(el, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true },
+      ],
+      throwOnError: false,
+    });
+    console.log("[KaTeX] Render complete");
+  } catch (e) {
+    console.warn("[KaTeX] Render error:", e);
+  }
+}
+
+function escapeLatexForMarked(raw) {
+  const blocks = [];
+  let out = raw.replace(
+    /(\$\$[\s\S]*?\$\$|\$[^$\n]+\$|\\\[([\s\S]*?)\\\]|\\\(([\s\S]*?)\\\))/g,
+    (m, display, dbracket, pbracket) => {
+      const idx = blocks.length;
+      const content = dbracket !== undefined ? `$$${dbracket}$$` : pbracket !== undefined ? `\\(${pbracket}\\)` : m;
+      blocks.push(content);
+      return `%%KATEXBLOCK${idx}%%`;
+    },
+  );
+  console.log("[KaTeX] Protected", blocks.length, "math blocks:", blocks.slice(0, 3));
+  return { text: out, restore: (rendered) => rendered.replace(/%%KATEXBLOCK(\d+)%%/g, (_, i) => blocks[+i]) };
+}
+
 // --- viewIndex --------------------------------------------------------------
 
 export function viewIndex(mount) {
@@ -140,7 +180,9 @@ export async function viewEntity(mount, type, slug) {
   }
 
   const title = fm.title || fm.name || entry?.title || entry?.name || slug;
-  const html = resolveWikilinks(marked.parse(body || ""));
+  const protected_ = escapeLatexForMarked(body || "");
+  const html = resolveWikilinks(marked.parse(protected_.text));
+  const restored = protected_.restore(html);
 
   // --- Left pane: siblings list -------------------------------------------
   const siblings = (state.entitiesByType[type] || []).slice().sort((a, b) => {
@@ -197,7 +239,7 @@ export async function viewEntity(mount, type, slug) {
       <article class="pane center">
         <h1>${esc(title)}</h1>
         ${meta}
-        <div class="body markdown">${html}</div>
+        <div class="body markdown">${restored}</div>
       </article>
       <aside class="pane right">
         <h3>Outgoing <span class="muted">(${outgoing.length})</span></h3>
@@ -284,6 +326,9 @@ export async function viewEntity(mount, type, slug) {
     </div>
     ` : ""}
   `;
+
+  const mathEl = mount.querySelector(".body.markdown");
+  if (mathEl) renderMath(mathEl);
 
   ensureEntityDatalist();
   if (type === "papers") ensurePaperDatalist();

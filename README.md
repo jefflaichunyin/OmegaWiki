@@ -6,14 +6,15 @@
 
 ### Karpathy's LLM-Wiki Vision, Fully Realized
 
-**Your AI Research Platform — From Papers to Publications, Powered by [Claude Code](https://docs.anthropic.com/en/docs/claude-code)**
+**Your AI Research Platform — From Papers to Publications, Powered by [Claude Code](https://docs.anthropic.com/en/docs/claude-code) or [OpenCode](https://opencode.ai)**
 
 *From paper ingestion to publication — your research knowledge compounds, never decays.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9+-yellow.svg)](https://www.python.org/)
 [![Skills](https://img.shields.io/badge/Skills-24-purple.svg)](#skills)
-[![Claude Code](https://img.shields.io/badge/Powered_by-Claude_Code-d97706.svg)](https://docs.anthropic.com/en/docs/claude-code)
+[![Claude Code](https://img.shields.io/badge/Compatible-Claude_Code-d97706.svg)](https://docs.anthropic.com/en/docs/claude-code)
+[![OpenCode](https://img.shields.io/badge/Compatible-OpenCode-blue.svg)](https://opencode.ai)
 [![Bilingual](https://img.shields.io/badge/i18n-EN_|_中文-orange.svg)](#bilingual-support)
 
 [English](#what-is-ωmegawiki) | [中文](#中文)
@@ -164,7 +165,9 @@ Every skill reads from and writes back to the wiki. Knowledge compounds — each
 
 ## Quick Start
 
-**Prerequisites:** Python 3.9+, Node.js 18+
+**Prerequisites:** Python 3.9+, Node.js 18+ (for Claude Code) or OpenCode installed
+
+### Option 1: Claude Code
 
 ```bash
 # 1. Clone
@@ -179,21 +182,55 @@ claude login
 chmod +x setup.sh && ./setup.sh        # Linux / macOS
 # Windows (PowerShell):
 #   powershell -ExecutionPolicy Bypass -File .\setup.ps1
-# setup creates .venv for OmegaWiki
-# the script does not keep your shell activated, but /init will use .venv automatically
 
 # 4. Put your own papers in raw/papers/ (.tex or .pdf)
 #    Optional: add intent notes to raw/notes/ and saved pages to raw/web/
-#    /init and direct local /ingest will manage generated inputs under raw/discovered/ and raw/tmp/
 
 # 5. Build your wiki
 claude
 # Then type: /init [your-research-topic]
 ```
 
+### Option 2: OpenCode
+
+OpenCode has native compatibility with Claude Code file structures. Your existing `.claude/` skills and `CLAUDE.md` work without modification.
+
+```bash
+# 1. Clone
+git clone https://github.com/skyllwt/OmegaWiki.git
+cd OmegaWiki
+
+# 2. Install OpenCode
+curl -fsSL https://opencode.ai/install | bash
+# Or: npm install -g opencode-ai
+
+# 3. One-click setup (same as Claude Code)
+chmod +x setup.sh && ./setup.sh        # Linux / macOS
+
+# 4. Configure (optional)
+cp opencode.json.example opencode.json
+
+# 5. Put your own papers in raw/papers/ (.tex or .pdf)
+
+# 6. Build your wiki
+opencode
+# Then type: /init [your-research-topic]
+```
+
+<details>
+<summary><b>OpenCode compatibility notes</b></summary>
+
+- **Skills**: OpenCode discovers `.claude/skills/*/SKILL.md` natively — no relocation needed
+- **Rules**: OpenCode reads `CLAUDE.md` as a fallback if `AGENTS.md` doesn't exist
+- **Permissions**: Create `opencode.json` from the example template for OpenCode-specific settings
+- **MCP servers**: Both platforms support `.mcp.json` for Model Context Protocol servers
+
+</details>
+
 <details>
 <summary><b>Manual setup (Linux / macOS)</b></summary>
 
+**For Claude Code:**
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
@@ -201,17 +238,35 @@ cp .env.example .env                 # Edit to add API keys
 cp config/settings.local.json.example .claude/settings.local.json
 ```
 
+**For OpenCode:**
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env                 # Edit to add API keys
+cp opencode.json.example opencode.json  # Optional, for custom permissions
+```
+
 </details>
 
 <details>
 <summary><b>Manual setup (Windows / PowerShell)</b></summary>
 
+**For Claude Code:**
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 Copy-Item .env.example .env          # Edit to add API keys
 Copy-Item config\settings.local.json.example .claude\settings.local.json
+```
+
+**For OpenCode:**
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env          # Edit to add API keys
+Copy-Item opencode.json.example opencode.json  # Optional
 ```
 
 Note: native Windows is supported for the local pipeline. Remote-GPU
@@ -375,7 +430,8 @@ OmegaWiki/
 │   ├── fetch_deepxiv.py         #   DeepXiv semantic search
 │   ├── fetch_wikipedia.py       #   Wikipedia fetcher (used by /prefill)
 │   └── remote.py                #   SSH ops for remote experiments
-├── .claude/skills/              # 24 Claude Code skill definitions
+├── .claude/skills/              # 24 Claude Code / OpenCode skill definitions
+├── opencode.json                # OpenCode permissions (optional)
 ├── i18n/                        # Bilingual: en/ (canonical) + zh/
 ├── config/                      # Configuration templates
 ├── mcp-servers/                 # Cross-model review server
@@ -400,9 +456,9 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## LLM API Configuration / 大模型 API 配置
 
-ΩmegaWiki runs on **Claude Code**, which speaks the **Anthropic API** protocol. You can use Claude directly, or route Claude Code to any third-party provider that exposes an Anthropic-compatible endpoint by overriding a few environment variables.
+ΩmegaWiki runs on **Claude Code** or **OpenCode**, which speak the **Anthropic API** protocol. You can use Claude directly, or route to any third-party provider with an Anthropic-compatible endpoint.
 
-ΩmegaWiki 基于 **Claude Code**,Claude Code 使用 **Anthropic API** 协议通信。你既可以直接使用 Claude,也可以通过覆盖几个环境变量,把 Claude Code 指向任意支持 Anthropic 协议的第三方供应商。
+ΩmegaWiki 基于 **Claude Code** 或 **OpenCode**，使用 **Anthropic API** 协议通信。你既可以直接使用 Claude，也可以通过覆盖环境变量接入任意支持 Anthropic 协议的第三方供应商。
 
 ### Option A — Native Claude / 原生 Claude
 

@@ -89,20 +89,23 @@ else
     exit 1
 fi
 
-# Claude Code
+# AI coding agent (Claude Code or OpenCode)
 if command -v claude &>/dev/null; then
     ok "Claude Code installed"
+elif command -v opencode &>/dev/null; then
+    ok "OpenCode installed"
 else
-    warn "Claude Code not found."
+    warn "No AI coding agent found."
     echo ""
-    echo "  Claude Code is required to use ΩmegaWiki skills."
-    echo "  Install with:"
-    echo "    npm install -g @anthropic-ai/claude-code"
+    echo "  Claude Code or OpenCode is required to use ΩmegaWiki skills."
+    echo "  Install one of:"
+    echo "    Claude Code: npm install -g @anthropic-ai/claude-code"
+    echo "    OpenCode:    curl -fsSL https://opencode.ai/install | bash"
     echo ""
-    read -p "  Continue setup without Claude Code? [y/N] " -n 1 -r
+    read -p "  Continue setup without an AI agent? [y/N] " -n 1 -r
     echo ""
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo "  Install Claude Code first, then re-run setup.sh"
+        echo "  Install an AI agent first, then re-run setup.sh"
         exit 1
     fi
 fi
@@ -241,20 +244,21 @@ echo "============================================"
 echo ""
 echo "  Next steps:"
 echo ""
-echo "  1. Authenticate Claude Code (if not already):"
-echo "     claude login"
+echo "  1. Authenticate your AI agent:"
+echo "     Claude Code: claude login"
+echo "     OpenCode:    opencode (auth on first run)"
 echo ""
 echo "  2. Optional: activate .venv for manual Python tool use:"
 echo "     source .venv/bin/activate"
 echo "     setup.sh does not activate your current shell permanently."
 echo "     /init will use .venv/bin/python automatically when it exists."
 echo ""
-echo "  3. Start Claude Code:"
-echo "     claude"
+echo "  3. Start your AI agent:"
+echo "     claude    # or: opencode"
 echo ""
 echo "  4. Complete API key configuration (guided):"
 echo "     /setup"
-echo "     Claude Code will walk you through Semantic Scholar,"
+echo "     The agent will walk you through Semantic Scholar,"
 echo "     DeepXiv, and Review LLM — skip any you don't have yet."
 echo ""
 echo "  5. Then initialize your wiki:"

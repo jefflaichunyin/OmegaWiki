@@ -35,6 +35,14 @@ mkdir -p .claude
 cp config/settings.local.json.example .claude/settings.local.json
 ```
 
+**For OpenCode users:** OpenCode has native compatibility with Claude Code file structures. Your `.claude/settings.local.json` will work, but you can also create an `opencode.json` in the project root for OpenCode-specific settings:
+
+```bash
+cp opencode.json.example opencode.json
+```
+
+See [OpenCode docs](https://opencode.ai/docs/permissions/) for the permissions format.
+
 **What the permissions do:**
 
 | Permission | Why it's needed |
@@ -46,9 +54,11 @@ cp config/settings.local.json.example .claude/settings.local.json
 | `Bash(mkdir:*)` | Create directories (e.g., wiki subdirectories) |
 | `Bash(git ls-tree:*)` | List files in git (used by some tools for discovery) |
 
-These are the **minimum permissions** for ΩmegaWiki skills to function. Claude Code will prompt you for approval when a skill tries to use a tool not in this list.
+These are the **minimum permissions** for ΩmegaWiki skills to function. Your AI agent will prompt you for approval when a skill tries to use a tool not in this list.
 
-**To customize:** You can add more permissions (e.g., `Bash(git add:*)` for auto-commit) or remove permissions if you want more manual control. See [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code) for the full permissions format.
+**To customize:**
+- **Claude Code**: See [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code) for the full permissions format.
+- **OpenCode**: See [OpenCode permissions docs](https://opencode.ai/docs/permissions/) for configuration options.
 
 ### `server.yaml.example`
 
@@ -77,5 +87,6 @@ Then edit `config/server.yaml` with your server's SSH details, GPU info, conda e
 ## All Done by `setup.sh`
 
 If you ran `setup.sh`, `.env` and `.claude/settings.local.json` are already
-copied to the right locations. `daily-arxiv.yml` and `server.yaml` are optional
-and can be created later when you use those features.
+copied to the right locations. For OpenCode, `opencode.json.example` is also
+available. `daily-arxiv.yml` and `server.yaml` are optional and can be created
+later when you use those features.

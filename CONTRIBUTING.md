@@ -35,7 +35,7 @@ Tools live in `tools/` and are **deterministic Python helpers** (no LLM reasonin
 
 - File naming: `snake_case.py`
 - Add corresponding tests in `tests/test_<module>.py`.
-- Do **NOT** create a `src/` Python package. This is a Claude Code skill project, not a pip-installable library.
+- Do **NOT** create a `src/` Python package. This is an AI agent skill project (Claude Code / OpenCode), not a pip-installable library.
 
 ## Testing
 
