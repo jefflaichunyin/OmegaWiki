@@ -56,10 +56,10 @@ function copyKatexAssets() {
 // Bundle each dependency with esbuild
 async function buildVendor() {
   const bundles = [
-    { entry: 'marked', outfile: 'marked.js' },
-    { entry: 'js-yaml', outfile: 'js-yaml.js' },
-    { entry: 'cytoscape', outfile: 'cytoscape.js' },
-    { entry: 'katex', outfile: 'katex.js' },
+    { entry: 'marked', outfile: 'marked.js', format: 'esm' },
+    { entry: 'js-yaml', outfile: 'js-yaml.js', format: 'esm' },
+    { entry: 'cytoscape', outfile: 'cytoscape.js', format: 'esm' },
+    { entry: 'katex', outfile: 'katex.js', format: 'iife', globalName: 'katex' },
   ];
 
   for (const spec of bundles) {
@@ -68,7 +68,8 @@ async function buildVendor() {
       entryPoints: [spec.entry],
       bundle: true,
       minify: false,
-      format: 'esm',
+      format: spec.format,
+      globalName: spec.globalName,
       outfile: join(VENDOR_DIR, spec.outfile),
       platform: 'browser',
       target: ['es2020'],

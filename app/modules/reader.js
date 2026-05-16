@@ -16,11 +16,9 @@ marked.use({ gfm: true, breaks: false });
 
 function renderMath(el) {
   if (typeof renderMathInElement !== "function") {
-    console.log("[KaTeX] renderMathInElement not ready, retrying...");
     setTimeout(() => renderMath(el), 100);
     return;
   }
-  console.log("[KaTeX] Rendering math in element:", el.textContent.slice(0, 100));
   try {
     renderMathInElement(el, {
       delimiters: [
@@ -31,7 +29,6 @@ function renderMath(el) {
       ],
       throwOnError: false,
     });
-    console.log("[KaTeX] Render complete");
   } catch (e) {
     console.warn("[KaTeX] Render error:", e);
   }
@@ -48,7 +45,6 @@ function escapeLatexForMarked(raw) {
       return `%%KATEXBLOCK${idx}%%`;
     },
   );
-  console.log("[KaTeX] Protected", blocks.length, "math blocks:", blocks.slice(0, 3));
   return { text: out, restore: (rendered) => rendered.replace(/%%KATEXBLOCK(\d+)%%/g, (_, i) => blocks[+i]) };
 }
 
