@@ -6,6 +6,9 @@ dist/
 build/
 *.egg
 
+# Exception: allow bundled vendor assets
+!app/vendor/
+
 # Environment
 .env
 *.env.local
@@ -28,6 +31,9 @@ Thumbs.db
 
 # Virtual environment
 .venv/
+
+# Node modules (rebuilt via npm install)
+node_modules/
 
 # Local and CI scratch files for /daily-arxiv runs
 .daily-arxiv/

@@ -1,0 +1,19 @@
+{
+  "name": "omegawiki",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:vendor": "node tools/build-vendor.js",
+    "build": "npm run build:vendor"
+  },
+  "dependencies": {
+    "marked": "^14.1.4",
+    "js-yaml": "^4.1.0",
+    "cytoscape": "^3.28.1",
+    "katex": "^0.16.25"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}

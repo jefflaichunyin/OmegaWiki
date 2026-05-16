@@ -3,7 +3,7 @@
 // Several widgets, each fed by one read endpoint or by state.entitiesByType
 // (already loaded at boot). All charts are pure HTML/CSS — no chart lib.
 
-import { marked } from "https://cdn.jsdelivr.net/npm/marked@14.1.4/lib/marked.esm.js";
+import { marked } from "/vendor/marked.js";
 import { getMaturity, getOpenQuestions, getLog, postRegenerate } from "./api.js";
 import { state } from "./state.js";
 import { triggerIntent } from "./intent.js";

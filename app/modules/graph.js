@@ -8,7 +8,7 @@
 // - double-click navigates to #/reader/{type}/{slug} (was: obsidian:// URI)
 // - cleanup on route change to avoid leaking Cytoscape instances
 
-import cytoscape from "https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/+esm";
+import cytoscape from "/vendor/cytoscape.js";
 import { getGraph } from "./api.js";
 import { state } from "./state.js";
 import {

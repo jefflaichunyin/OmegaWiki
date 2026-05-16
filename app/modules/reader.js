@@ -1,8 +1,8 @@
 // Reader views: index (entity-type cards), list (slugs in a type),
 // entity (three-pane: siblings | metadata + body | backlinks).
 
-import { marked } from "https://cdn.jsdelivr.net/npm/marked@14.1.4/lib/marked.esm.js";
-import yaml from "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/+esm";
+import { marked } from "/vendor/marked.js";
+import yaml from "/vendor/js-yaml.js";
 import { getEntity, patchEntity, postEdge, postCitation, getGraph } from "./api.js";
 import { resolveWikilinks } from "./wikilink.js";
 import { state } from "./state.js";
